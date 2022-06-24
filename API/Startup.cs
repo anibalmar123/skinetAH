@@ -1,13 +1,12 @@
-using System.Linq;
-using API.Errors;
 using API.Extensions;
 using API.Helpers;
 using API.Middleware;
-using Core.Interfaces;
 using Infraestructure.Data;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace API
 {
@@ -24,12 +23,17 @@ namespace API
         {
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
-            services.AddDbContext<StoreContext>(
-                x => x.UseSqlite(_config.GetConnectionString("DefaultConnection"))); 
-            
+            services.AddDbContext<StoreContext>(x =>
+                x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
-            
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,11 +41,7 @@ namespace API
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
-            // if (env.IsDevelopment())
-            // {
-            //     app.UseDeveloperExceptionPage();
-                
-            // }
+            app.UseSwaggerDocumentation();
 
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
@@ -51,9 +51,9 @@ namespace API
             
             app.UseStaticFiles();
 
-            app.UseAuthorization();
+            app.UseCors("CorsPolicy");
 
-            app.UseSwaggerDocumentation();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
