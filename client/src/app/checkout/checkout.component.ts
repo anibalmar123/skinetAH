@@ -12,7 +12,6 @@ import { Observable } from 'rxjs';
 })
 export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
-  basketTotals$: Observable<IBasketTotals>;
 
   constructor(private fb: FormBuilder, private accountService: AccountService, private basketService: BasketService) { }
 
@@ -20,7 +19,6 @@ export class CheckoutComponent implements OnInit {
     this.createCheckoutForm();
     this.getAddressFormValues();
     this.getDeliveryMethodValue();
-    this.basketTotals$ = this.basketService.basketTotal$;
   }
 
   createCheckoutForm(){

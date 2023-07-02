@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BasketService } from 'src/app/basket/basket.service';
 
 @Component({
   selector: 'app-order-totals',
@@ -6,12 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./order-totals.component.scss']
 })
 export class OrderTotalsComponent implements OnInit {
-  @Input() shippingPrice: number;
-  @Input() subtotal: number;
-  @Input() total: number;
 
-
-  constructor() { }
+  constructor(public basketService: BasketService) { }
 
   ngOnInit(): void {
 

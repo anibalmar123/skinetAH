@@ -10,7 +10,7 @@ import { OrdersService } from '../orders.service';
   styleUrls: ['./order-detailed.component.scss']
 })
 export class OrderDetailedComponent implements OnInit {
-  order: IOrder;
+  order?: IOrder;
 
   constructor(private route: ActivatedRoute, private breadcrumbService: BreadcrumbService,
     private orderService: OrdersService) { 
@@ -18,13 +18,16 @@ export class OrderDetailedComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.orderService.getOrderDetailed(+this.route.snapshot.paramMap.get('id'))
+    const id = +this.route.snapshot.paramMap.get('id');
+    id && this.orderService.getOrderDetailed(id)
       .subscribe({
-        next: (order: IOrder) => {
+        next: order => {
           this.order = order;
           this.breadcrumbService.set('@OrderDetailed', `Order# ${order.id} - ${order.status}`);
         },
-        error: (e) => console.log(e)
+        error: error => {
+          console.log(error)
+        }
       });
   }
 

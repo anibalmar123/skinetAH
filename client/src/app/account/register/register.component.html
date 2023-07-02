@@ -2,7 +2,7 @@
     <div class="col-3">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="text-center mb-4">
-              <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+              <h1 class="h3 mb-3 fw-normal">Register</h1>
             </div>
         
             <app-text-input formControlName="displayName" [label]="'Display Name'"></app-text-input>
@@ -14,10 +14,11 @@
                 {{error}}
               </li>
             </ul>
-
-            <button
-            class="btn btn-lg btn-primary btn-block" 
-            type="submit">Register</button>
+            <div class="d-grid">
+              <button
+              class="btn btn-lg btn-primary btn-block" 
+              type="submit">Register</button>
+            </div>
           </form>
     </div>
 </div>
