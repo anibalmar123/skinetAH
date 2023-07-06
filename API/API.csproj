@@ -19,10 +19,7 @@
 
   <ItemGroup>
     <Content Include="Content\**" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Infraestructure\Infraestructure.csproj" />
   </ItemGroup>
-
+  
 </Project>
